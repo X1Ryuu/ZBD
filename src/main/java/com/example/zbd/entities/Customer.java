@@ -22,15 +22,22 @@ public class Customer {
     private Long id;
     @Column(unique=true)
     private String email;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
-    private String phone;
+    @Column(name = "date_of_birth")
     private LocalDate birthDate;
+    private String phone;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
-
     @ManyToMany
-    private List<WishItem> wishList = new ArrayList<>();
+    @JoinTable(
+            name = "wishlist",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> wishlist = new ArrayList<>();
 }

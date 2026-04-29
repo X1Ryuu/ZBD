@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +27,7 @@ public class Product {
     private String brand;
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
-    @Column(precision = 10, scale = 2)
+    @Column(name = "weight_kg", precision = 10, scale = 2)
     private BigDecimal weight;
     private Boolean isActive;
     private LocalDateTime createdAt;
@@ -33,4 +35,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
+    @ManyToMany(mappedBy = "wishlist")
+    private List<Customer> customers = new ArrayList<>();
 }
