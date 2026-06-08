@@ -1,19 +1,19 @@
-SELECT * FROM customers;
+UPDATE customers SET first_name = 'Jane' WHERE id = 1;
 
-SELECT id, email FROM customers WHERE email LIKE '%@gmail.com';
+UPDATE products SET price = price * 1.1;
 
-SELECT * FROM products WHERE price > 100 ORDER BY price DESC;
+UPDATE orders SET status = 'SHIPPED' WHERE id = 1;
 
-SELECT name, description FROM categories WHERE parent_category_id IS NULL;
+UPDATE categories SET parent_category_id = NULL WHERE id = 4;
 
-SELECT * FROM orders WHERE status = 'SHIPPED';
+UPDATE reviews SET rating = 4 WHERE id = 1;
 
-SELECT * FROM reviews WHERE rating >= 4;
+UPDATE customers SET updated_at = NOW() WHERE id = 1;
 
-SELECT COUNT(*) FROM orders;
+UPDATE products SET is_active = FALSE WHERE price < 10;
 
-SELECT AVG(price) FROM products;
+UPDATE orders SET shipped_date = NOW() WHERE status = 'SHIPPED';
 
-SELECT * FROM customers WHERE created_at > NOW() - INTERVAL '30 days';
+UPDATE order_items SET total_price = quantity * unit_price;
 
-SELECT DISTINCT brand FROM products;
+UPDATE customers SET phone = '123456789' WHERE email = 'john@example.com';
