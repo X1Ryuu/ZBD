@@ -1,29 +1,43 @@
-INSERT INTO categories (name, description, created_at)
-VALUES ('Electronics', 'Devices', NOW());
+SELECT o.id, c.email
+FROM orders o
+JOIN customers c ON o.customer_id = c.id;
 
-INSERT INTO categories (name, parent_category_id, created_at)
-VALUES ('Phones', 1, NOW());
+SELECT oi.*, p.name AS product_name
+FROM order_items oi
+JOIN products p ON oi.product_id = p.id;
 
-INSERT INTO customers (email, first_name, last_name, created_at, updated_at)
-VALUES ('john2@example.com', 'John', 'Doe', NOW(), NOW());
+SELECT r.rating, p.name AS product_name
+FROM reviews r
+JOIN products p ON r.product_id = p.id;
 
-INSERT INTO products (name, price, sku, is_active, created_at, updated_at)
-VALUES ('iPhone', 999.99, 'IP-NEW-001', TRUE, NOW(), NOW());
+SELECT r.*, c.email
+FROM reviews r
+JOIN customers c ON r.customer_id = c.id;
 
-INSERT INTO orders (status, total_amount, customer_id, created_at, updated_at)
-VALUES ('PENDING', 100.00, 1, NOW(), NOW());
+SELECT o.id AS order_id, SUM(oi.total_price) AS items_total
+FROM orders o
+JOIN order_items oi ON o.id = oi.order_id
+GROUP BY o.id;
 
-INSERT INTO order_items (quantity, unit_price, total_price, order_id, product_id)
-VALUES (2, 50.00, 100.00, 1, 1);
+SELECT p.name AS product_name, c.name AS category_name
+FROM products p
+JOIN categories c ON p.category_id = c.id;
 
-INSERT INTO reviews (rating, title, product_id, customer_id, created_at)
-VALUES (5, 'Great!', 1, 1, NOW());
+SELECT c1.name AS category_name, c2.name AS parent_name
+FROM categories c1
+LEFT JOIN categories c2 ON c1.parent_category_id = c2.id;
 
-INSERT INTO customers (email, created_at, updated_at)
-VALUES ('unique2@test.com', NOW(), NOW());
+SELECT o.id AS order_id, p.name AS product_name, oi.quantity
+FROM orders o
+JOIN order_items oi ON o.id = oi.order_id
+JOIN products p ON oi.product_id = p.id;
 
-INSERT INTO products (name, sku, price, category_id, is_active, created_at, updated_at)
-VALUES ('Laptop', 'LP-NEW-001', 1500.00, 1, TRUE, NOW(), NOW());
+SELECT c.email, COUNT(o.id) AS total_orders
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id
+GROUP BY c.email;
 
-INSERT INTO orders (status, subtotal, tax_amount, total_amount, created_at, updated_at)
-VALUES ('NEW', 80.00, 20.00, 100.00, NOW(), NOW());
+SELECT p.name AS product_name, AVG(r.rating) AS avg_rating
+FROM products p
+LEFT JOIN reviews r ON p.id = r.product_id
+GROUP BY p.name;
