@@ -1,34 +1,19 @@
+DELETE FROM customers WHERE id = 10;
 
+DELETE FROM orders WHERE status = 'CANCELLED';
 
+DELETE FROM products WHERE is_active = FALSE;
 
-SELECT COUNT(*) FROM customers;
+DELETE FROM reviews WHERE rating <= 2;
 
-SELECT SUM(total_amount) FROM orders;
+DELETE FROM categories WHERE id = 5;
 
+DELETE FROM order_items WHERE order_id = 1;
 
-SELECT AVG(rating) FROM reviews;
+DELETE FROM customers WHERE email LIKE '%spam%';
 
-SELECT MAX(price) FROM products;
+DELETE FROM orders WHERE created_at < NOW() - INTERVAL '1 year';
 
-SELECT MIN(price) FROM products;
+DELETE FROM products WHERE price > 10000;
 
-SELECT customer_id, COUNT(*) AS order_count
-FROM orders
-GROUP BY customer_id;
-
-SELECT product_id, SUM(quantity) AS total_sold
-FROM order_items
-GROUP BY product_id;
-
-SELECT status, COUNT(*) AS status_count
-FROM orders
-GROUP BY status;
-
-SELECT category_id, AVG(price) AS avg_price
-FROM products
-GROUP BY category_id;
-
-SELECT order_date::date AS order_day, COUNT(*) AS orders_placed
-FROM orders
-GROUP BY order_date::date
-ORDER BY order_day;
+DELETE FROM reviews WHERE created_at < NOW() - INTERVAL '6 months';
