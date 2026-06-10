@@ -34,7 +34,7 @@ FROM Product p
 SELECT DISTINCT p.brand
 FROM Product p
 """)
-    String getBrand();
+    List<String> getBrands();
 
 
     List<Product> findAllByPriceGreaterThanOrderByPriceDesc(BigDecimal price);

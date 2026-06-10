@@ -2,12 +2,16 @@ package com.example.zbd;
 
 import com.example.zbd.repositories.*;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -30,53 +34,66 @@ public class SelectTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
+    private String lastTestName = "";
+
+    @BeforeEach
+    void separator(TestInfo testInfo, RepetitionInfo repetitionInfo) throws IOException {
+        int current = repetitionInfo.getCurrentRepetition();
+        int total = repetitionInfo.getTotalRepetitions();
+
+        if(current == total){
+            Files.writeString(Path.of("query_metrics.csv"),"\n", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        }
+
+    }
+
+    @RepeatedTest(80)
     public void testCustomerSelect(){
         customerRepository.findAll();
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testIdAndEmailOfCustomerSelect(){
         customerRepository.getAllWhereEmailLike("@gmail.com");
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testProductByPriceSelect(){
         productRepository.findAllByPriceGreaterThanOrderByPriceDesc(new BigDecimal(100));
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testNameAndDescriptionOfCategorySelect(){
         categoryRepository.findRootCategories();
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testOrdersByStatusSelect(){
         orderRepository.findAllByStatus("SHIPPED");
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testReviewsByRatingSelect(){
         reviewRepository.findAllByRatingGreaterThanEqual(4);
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testCountOfOrdersSelect(){
         orderItemRepository.count();
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testAvgPriceOfProductSelect(){
         productRepository.getAvgPrice();
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testCustomerCreatedAtSelect(){
         customerRepository.findAllByCreatedAtAfter(LocalDateTime.now().minusDays(30));
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testDistinctBrandOfProductsSelect(){
-        productRepository.getBrand();
+        productRepository.getBrands();
     }
 }

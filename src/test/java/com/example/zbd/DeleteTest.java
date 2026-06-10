@@ -2,12 +2,16 @@ package com.example.zbd;
 
 import com.example.zbd.repositories.*;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -30,46 +34,57 @@ public class DeleteTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
+    @BeforeEach
+    void separator(TestInfo testInfo, RepetitionInfo repetitionInfo) throws IOException {
+        int current = repetitionInfo.getCurrentRepetition();
+        int total = repetitionInfo.getTotalRepetitions();
+
+        if(current == total){
+            Files.writeString(Path.of("query_metrics.csv"),"\n", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        }
+
+    }
+
+    @RepeatedTest(80)
     public void testDeleteCustomerById(){
         customerRepository.deleteAllById(10L);
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testDeleteOrderByStatus(){
         orderRepository.deleteAllByStatus("CANCELED");
     }
-    @Test
+    @RepeatedTest(80)
     public void testDeleteProductByActive(){
         productRepository.deleteAllByIsActive(Boolean.FALSE);
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testDeleteReviewByRating(){
         reviewRepository.deleteAllByRatingLessThanEqual(2);
     }
 
-    @Test
+    @RepeatedTest(80)
     public void testDeleteCategoryById(){
         categoryRepository.deleteAllById(5L);
     }
-    @Test
+    @RepeatedTest(80)
     public void testDeleteOrderItemById(){
         orderItemRepository.deleteAllById(1L);
     }
-    @Test
+    @RepeatedTest(80)
     public void testDeleteCustomerByEmailFragment(){
         customerRepository.deleteAllByEmailContaining("spam");
     }
-    @Test
+    @RepeatedTest(80)
     public void testDeleteOrderByCreationInterval(){
         orderRepository.deleteAllByCreatedAtBefore(LocalDateTime.now().minusYears(1));
     }
-    @Test
+    @RepeatedTest(80)
     public void testDeleteProductByPriceGT(){
         productRepository.deleteAllByPriceGreaterThan(new BigDecimal(10000));
     }
-    @Test
+    @RepeatedTest(80)
     public void testDeleteReviewsByCreationInterval(){
         reviewRepository.deleteAllByCreatedAtBefore(LocalDateTime.now().minusMonths(6));
     }

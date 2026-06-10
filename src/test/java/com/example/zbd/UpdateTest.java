@@ -2,12 +2,16 @@ package com.example.zbd;
 
 import com.example.zbd.repositories.*;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 @SpringBootTest
 @Transactional
@@ -29,52 +33,63 @@ public class UpdateTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
+    @BeforeEach
+    void separator(TestInfo testInfo, RepetitionInfo repetitionInfo) throws IOException {
+        int current = repetitionInfo.getCurrentRepetition();
+        int total = repetitionInfo.getTotalRepetitions();
+
+        if(current == total){
+            Files.writeString(Path.of("query_metrics.csv"),"\n", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        }
+
+    }
+
+    @RepeatedTest(80)
     void testUpdateCustomerFirstName() {
         customerRepository.updateCustomerName("Jane", 1L);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testIncreaseProductPrices() {
         productRepository.increasePricesByXPercent(new BigDecimal(10));
     }
 
-    @Test
+    @RepeatedTest(80)
     void testUpdateOrderStatus() {
         orderRepository.markOrderAsShipped(1L);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testRemoveParentCategory() {
         categoryRepository.removeParentCategory(1L);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testUpdateReviewRating() {
         reviewRepository.updateRating(4, 1L);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testUpdateCustomerTimestamp() {
         customerRepository.updateCustomerTimestamp(1L);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testDeactivateCheapProducts() {
         productRepository.deactivateCheapProducts(new BigDecimal(10));
     }
 
-    @Test
+    @RepeatedTest(80)
     void testUpdateShippedDate() {
         orderRepository.updateShippedDate();
     }
 
-    @Test
+    @RepeatedTest(80)
     void testRecalculateOrderItemTotalPrice() {
         orderItemRepository.recalculateTotalPrices();
     }
 
-    @Test
+    @RepeatedTest(80)
     void testUpdateCustomerPhoneByEmail() {
         customerRepository.updatePhoneByEmail("123456789", "john@example.com");
     }

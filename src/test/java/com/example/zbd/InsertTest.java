@@ -1,14 +1,19 @@
 package com.example.zbd;
 
 import com.example.zbd.entities.*;
+import com.example.zbd.entities.Order;
 import com.example.zbd.repositories.*;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -31,7 +36,18 @@ public class InsertTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
+    @BeforeEach
+    void separator(TestInfo testInfo, RepetitionInfo repetitionInfo) throws IOException {
+        int current = repetitionInfo.getCurrentRepetition();
+        int total = repetitionInfo.getTotalRepetitions();
+
+        if(current == total){
+            Files.writeString(Path.of("query_metrics.csv"),"\n", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        }
+
+    }
+
+    @RepeatedTest(80)
     void testCreateCategoryWithDescription() {
         Category cat = new Category();
         cat.setName("Electronics");
@@ -40,7 +56,7 @@ public class InsertTest {
         categoryRepository.save(cat);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateCategoryWithParentCategory() {
         Category cat = new Category();
         cat.setName("Phones");
@@ -49,7 +65,7 @@ public class InsertTest {
         categoryRepository.save(cat);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateCustomer() {
         Customer customer = new Customer();
         LocalDateTime now = LocalDateTime.now();
@@ -61,7 +77,7 @@ public class InsertTest {
         customerRepository.save(customer);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateProduct() {
         Product prod = new Product();
         prod.setName("iPhone");
@@ -74,7 +90,7 @@ public class InsertTest {
         productRepository.save(prod);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateOrder() {
         Customer customer = customerRepository.findCustomerById(1L);
         Order order = new Order();
@@ -87,7 +103,7 @@ public class InsertTest {
         orderRepository.save(order);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateOrderItem() {
         Order order = orderRepository.findOrderById(1L);
         Product product = productRepository.findProductById(1L);
@@ -102,7 +118,7 @@ public class InsertTest {
         orderItemRepository.save(item);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateReview() {
         Customer customer = customerRepository.findCustomerById(1L);
         Product product = productRepository.findProductById(1L);
@@ -117,7 +133,7 @@ public class InsertTest {
         reviewRepository.save(review);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateCustomerWithEmailOnly() {
         Customer customer = new Customer();
         customer.setEmail("unique2@test.com");
@@ -127,7 +143,7 @@ public class InsertTest {
         customerRepository.save(customer);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateProductWithCategory() {
         Category category = categoryRepository.findCategoryById(1L);
         Product product = new Product();
@@ -142,7 +158,7 @@ public class InsertTest {
         productRepository.save(product);
     }
 
-    @Test
+    @RepeatedTest(80)
     void testCreateOrderWithSubtotalAndTax() {
         Order order = new Order();
         order.setStatus("NEW");
