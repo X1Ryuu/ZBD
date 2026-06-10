@@ -1,13 +1,20 @@
 package com.example.zbd;
 
 import com.example.zbd.repositories.*;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.math.BigDecimal;
 
 @SpringBootTest
+@Transactional
+@Sql(
+        scripts = "/small.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+)
 public class UpdateTest {
     @Autowired
     private CustomerRepository customerRepository;
