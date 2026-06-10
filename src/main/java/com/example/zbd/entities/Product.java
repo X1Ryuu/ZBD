@@ -37,4 +37,6 @@ public class Product {
     private Category category;
     @ManyToMany(mappedBy = "wishlist")
     private List<Customer> customers = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 }

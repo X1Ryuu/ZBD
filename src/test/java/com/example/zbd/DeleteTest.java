@@ -27,45 +27,45 @@ public class DeleteTest {
 
     @Test
     public void testDeleteCustomerById(){
-        this.customerRepository.deleteAllById(10L);
+        customerRepository.deleteAllById(10L);
     }
 
     @Test
     public void testDeleteOrderByStatus(){
-        this.orderRepository.deleteAllByStatus("CANCELED");
+        orderRepository.deleteAllByStatus("CANCELED");
     }
     @Test
     public void testDeleteProductByActive(){
-        this.productRepository.deleteAllByIsActive(Boolean.FALSE);
+        productRepository.deleteAllByIsActive(Boolean.FALSE);
     }
 
     @Test
     public void testDeleteReviewByRating(){
-        this.reviewRepository.deleteAllByRatingLessThanEqual(2);
+        reviewRepository.deleteAllByRatingLessThanEqual(2);
     }
 
     @Test
     public void testDeleteCategoryById(){
-        this.categoryRepository.deleteAllById(5L);
+        categoryRepository.deleteAllById(5L);
     }
     @Test
     public void testDeleteOrderItemById(){
-        this.orderItemRepository.deleteAllById(1L);
+        orderItemRepository.deleteAllById(1L);
     }
     @Test
     public void testDeleteCustomerByEmailFragment(){
-        this.customerRepository.deleteAllByEmailContaining("spam");
+        customerRepository.deleteAllByEmailContaining("spam");
     }
     @Test
     public void testDeleteOrderByCreationInterval(){
-        this.orderRepository.deleteAllByCreatedAtBefore(LocalDateTime.now().minusYears(1));
+        orderRepository.deleteAllByCreatedAtBefore(LocalDateTime.now().minusYears(1));
     }
     @Test
     public void testDeleteProductByPriceGT(){
-        this.productRepository.deleteAllByPriceGreaterThan(new BigDecimal(10000));
+        productRepository.deleteAllByPriceGreaterThan(new BigDecimal(10000));
     }
     @Test
     public void testDeleteReviewsByCreationInterval(){
-        this.reviewRepository.deleteAllByCreatedAtBefore(LocalDateTime.now().minusMonths(6));
+        reviewRepository.deleteAllByCreatedAtBefore(LocalDateTime.now().minusMonths(6));
     }
 }

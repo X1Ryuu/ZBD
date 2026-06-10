@@ -1,7 +1,9 @@
 package com.example.zbd.repositories;
 
 import com.example.zbd.entities.OrderItem;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +21,40 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     """)
     List<Object[]> findTopSellingProducts();
 
-    public void deleteAllById(Long id);
+
+
+    //--------------------------------- select
+
+
+    //--------------------------------- update
+    @Modifying
+    @Transactional
+    @Query("""
+           UPDATE OrderItem oi
+           SET oi.totalPrice = oi.quantity * oi.unitPrice
+           """)
+    int recalculateTotalPrices();
+
+    //--------------------------------- delete
+    void deleteAllById(Long id);
+
+    //--------------------------------- insert
+
+
+    //--------------------------------- aggregation
+    @Query("""
+       SELECT oi.product.id,
+              SUM(oi.quantity)
+       FROM OrderItem oi
+       GROUP BY oi.product.id
+       """)
+    List<Object[]> getTotalSoldPerProduct();
+
+    //--------------------------------- join
+    @Query("""
+           SELECT oi, p.name
+           FROM OrderItem oi
+           JOIN oi.product p
+           """)
+    List<Object[]> findItemsWithProductName();
 }

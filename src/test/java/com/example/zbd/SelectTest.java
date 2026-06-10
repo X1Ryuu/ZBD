@@ -27,51 +27,51 @@ public class SelectTest {
 
     @Test
     public void testCustomerSelect(){
-        this.customerRepository.findAll();
+        customerRepository.findAll();
     }
 
     @Test
     public void testIdAndEmailOfCustomerSelect(){
-        this.customerRepository.getAllWhereEmailLike("@gmail.com");
+        customerRepository.getAllWhereEmailLike("@gmail.com");
     }
 
     @Test
     public void testProductByPriceSelect(){
-        this.productRepository.findAllByPriceGreaterThanOrderByPriceDesc(new BigDecimal(100));
+        productRepository.findAllByPriceGreaterThanOrderByPriceDesc(new BigDecimal(100));
     }
 
     @Test
     public void testNameAndDescriptionOfCategorySelect(){
-        this.categoryRepository.findRootCategories();
+        categoryRepository.findRootCategories();
     }
 
     @Test
     public void testOrdersByStatusSelect(){
-        this.orderRepository.findAllByStatus("SHIPPED");
+        orderRepository.findAllByStatus("SHIPPED");
     }
 
     @Test
     public void testReviewsByRatingSelect(){
-        this.reviewRepository.findAllByRatingGreaterThanEqual(4);
+        reviewRepository.findAllByRatingGreaterThanEqual(4);
     }
 
     @Test
     public void testCountOfOrdersSelect(){
-        this.orderItemRepository.count();
+        orderItemRepository.count();
     }
 
     @Test
     public void testAvgPriceOfProductSelect(){
-        this.productRepository.getAvgPrice();
+        productRepository.getAvgPrice();
     }
 
     @Test
     public void testCustomerCreatedAtSelect(){
-        this.customerRepository.findAllByCreatedAtAfter(LocalDateTime.now().minusDays(30));
+        customerRepository.findAllByCreatedAtAfter(LocalDateTime.now().minusDays(30));
     }
 
     @Test
     public void testDistinctBrandOfProductsSelect(){
-        this.productRepository.getBrand();
+        productRepository.getBrand();
     }
 }
